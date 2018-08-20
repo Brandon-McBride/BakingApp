@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mcbridebrandon.bakingapp.R;
@@ -33,7 +32,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
     @Override
     public RecipeViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
         Context context = viewGroup.getContext();
-        int layoutIdForListItem = R.layout.recipe_list_content;
+        int layoutIdForListItem = R.layout.recipe_list_item;
         LayoutInflater inflater = LayoutInflater.from(context);
 
         View view = inflater.inflate(layoutIdForListItem, viewGroup, false);

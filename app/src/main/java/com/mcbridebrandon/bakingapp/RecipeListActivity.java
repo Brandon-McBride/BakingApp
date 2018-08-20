@@ -56,9 +56,6 @@ public class RecipeListActivity extends AppCompatActivity implements RecipeAdapt
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_list);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        toolbar.setTitle(getTitle());
 
 
         if (findViewById(R.id.recipe_detail_container) != null) {
