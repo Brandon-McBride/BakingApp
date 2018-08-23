@@ -2,6 +2,7 @@ package com.mcbridebrandon.bakingapp.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,6 +16,7 @@ import com.mcbridebrandon.bakingapp.StepDetailActivity;
 import com.mcbridebrandon.bakingapp.adapters.StepAdapter;
 import com.mcbridebrandon.bakingapp.model.Step;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class StepListFragment extends Fragment implements StepAdapter.ItemClickListener{
@@ -59,11 +61,15 @@ public class StepListFragment extends Fragment implements StepAdapter.ItemClickL
 
     @Override
     public void onItemClick(int position) {
-        //handled in detail activity
         Step stepToSend;
+
+        //int stepPosition = position;
+
+
         stepToSend = stepList.get(position);
         Bundle bundle = new Bundle();
-        bundle.putParcelable("step", stepToSend);
+        bundle.putParcelableArrayList("steplist", (ArrayList<? extends Parcelable>) stepList);
+        bundle.putInt("position", position);
         Intent intent = new Intent(getContext(), StepDetailActivity.class);
         intent.putExtras(bundle);
         startActivity(intent);
