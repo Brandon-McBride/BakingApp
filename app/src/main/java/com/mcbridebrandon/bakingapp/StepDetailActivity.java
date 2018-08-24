@@ -48,6 +48,8 @@ public class StepDetailActivity extends AppCompatActivity implements View.OnClic
 
             //update ingredient list
             videoFragment.setVideoUrl(currentStep.getVideoURL());
+            videoFragment.setThumbnailUrl(currentStep.getThumbnailURL());
+            videoFragment.setRecipeDescription(currentStep.getDescription());
 
             //use the fragment manager and transaction to add the fragment to the screen
             FragmentManager fragmentManager = getSupportFragmentManager();
@@ -61,48 +63,11 @@ public class StepDetailActivity extends AppCompatActivity implements View.OnClic
             //hide
         }
 
-        //view for thumbnail image
-        final ImageView ivThumbnail = findViewById(R.id.iv_thumb);
-        /*
-        Not sure if this is the correct way of doing this maybe add a check for the file type
-        before using picasso callback
-         */
-        if(!currentStep.getThumbnailURL().isEmpty()){
-            Picasso.get()
-                    .load(currentStep.getThumbnailURL())
-                    //.placeholder(R.drawable.user_placeholder)
-                    //.error(R.drawable.user_placeholder_error)
-                    .into(ivThumbnail, new Callback() {
-                        @Override
-                        public void onSuccess() {
-                            //picture was loaded
-                            ivThumbnail.setVisibility(View.VISIBLE);
-                        }
-
-                        @Override
-                        public void onError(Exception e) {
-                            //picture not loaded error
-                            ivThumbnail.setVisibility(View.GONE);
-                        }
-                    });
-
-        }else{
-            ivThumbnail.setVisibility(View.GONE);
-        }
-
-
-        //load recipe step into textview
-        TextView recipeDescription = findViewById(R.id.tv_recipe_description);
-
-        recipeDescription.setText(currentStep.getDescription());
-
-
         Button prevButton = findViewById(R.id.btn_prev);
         Button nextButton = findViewById(R.id.btn_next);
 
         prevButton.setOnClickListener(this);
         nextButton.setOnClickListener(this);
-
 
     }
 
@@ -114,14 +79,30 @@ public class StepDetailActivity extends AppCompatActivity implements View.OnClic
             case R.id.btn_prev:
                 //previous button was pressed
                 //load previous step
-            if(stepList.get(stepPosition).getId() > 0)
+            if(currentStep.getId() > 0)
             {
                 if (player!=null){
                     player.stop();
                 }
-
-
                 //update
+                //create a new instance of the ingredient fragment
+                VideoPlayerFragment videoFragment = new VideoPlayerFragment();
+
+                currentStep = stepList.get(stepPosition-1);
+                //update ingredient list
+                videoFragment.setVideoUrl(currentStep.getVideoURL());
+                videoFragment.setThumbnailUrl(currentStep.getThumbnailURL());
+                videoFragment.setRecipeDescription(currentStep.getDescription());
+
+                //use the fragment manager and transaction to add the fragment to the screen
+                FragmentManager fragmentManager = getSupportFragmentManager();
+
+                //fragment transaction
+                fragmentManager.beginTransaction()
+                        .replace(R.id.video_container,videoFragment)
+                        .addToBackStack(null)
+                        .commit();
+
                 
             }
             else {
@@ -132,14 +113,29 @@ public class StepDetailActivity extends AppCompatActivity implements View.OnClic
             case R.id.btn_next:
                 //next button was pressed
                 //load next step
-
-
-                if(stepList.get(stepPosition).getId() < stepList.get(lastPosition).getId()) {
+                if(currentStep.getId() < stepList.get(lastPosition).getId()) {
                     if (player != null) {
                         player.stop();
                     }
                     //update
+//update
+                    //create a new instance of the ingredient fragment
+                    VideoPlayerFragment videoFragment = new VideoPlayerFragment();
 
+                    currentStep = stepList.get(stepPosition+1);
+                    //update ingredient list
+                    videoFragment.setVideoUrl(currentStep.getVideoURL());
+                    videoFragment.setThumbnailUrl(currentStep.getThumbnailURL());
+                    videoFragment.setRecipeDescription(currentStep.getDescription());
+
+                    //use the fragment manager and transaction to add the fragment to the screen
+                    FragmentManager fragmentManager = getSupportFragmentManager();
+
+                    //fragment transaction
+                    fragmentManager.beginTransaction()
+                            .replace(R.id.video_container,videoFragment)
+                            .addToBackStack(null)
+                            .commit();
 
 
                 }else

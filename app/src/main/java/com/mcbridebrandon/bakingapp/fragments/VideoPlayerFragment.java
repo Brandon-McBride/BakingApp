@@ -12,6 +12,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
@@ -31,15 +33,21 @@ import com.google.android.exoplayer2.util.Util;
 import com.mcbridebrandon.bakingapp.R;
 import com.mcbridebrandon.bakingapp.adapters.StepAdapter;
 import com.mcbridebrandon.bakingapp.model.Step;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 public class VideoPlayerFragment extends Fragment{
+    private ImageView ivThumbnail;
+    private TextView recipeDescription;
     private SimpleExoPlayer player;
     private PlayerView playerView;
     private Long playerPosition;
     private View rootView;
     private String videoURL = "";
+    private String thumbURL = "";
+    private String description = "";
 
     //mandatory constructor for instantiating the fragment
     public VideoPlayerFragment(){
@@ -58,13 +66,51 @@ public class VideoPlayerFragment extends Fragment{
         //inflate the ingredient list layout
         View rootView = inflater.inflate(R.layout.fragment_video_player,container,false);
         playerView = rootView.findViewById(R.id.video_playerView);
+        ivThumbnail = rootView.findViewById(R.id.iv_thumb);
+        recipeDescription = rootView.findViewById(R.id.tv_recipe_description);
 
         //init player
         initializePlayer(videoURL);
 
+        //initialize thumbnail
+        initalizeThumbnail(thumbURL);
+        //set text
+        //load recipe step into textview
+        recipeDescription.setText(description);
 
 
         return rootView;
+    }
+
+    private void initalizeThumbnail(String thumbURL)
+    {
+        /*
+        Not sure if this is the correct way of doing this maybe add a check for the file type
+        before using picasso callback
+         */
+        if(!thumbURL.isEmpty()){
+            Picasso.get()
+                    .load(thumbURL)
+                    //.placeholder(R.drawable.user_placeholder)
+                    //.error(R.drawable.user_placeholder_error)
+                    .into(ivThumbnail, new Callback() {
+                        @Override
+                        public void onSuccess() {
+                            //picture was loaded
+                            ivThumbnail.setVisibility(View.VISIBLE);
+                        }
+
+                        @Override
+                        public void onError(Exception e) {
+                            //picture not loaded error
+                            ivThumbnail.setVisibility(View.GONE);
+                        }
+                    });
+
+        }else{
+            ivThumbnail.setVisibility(View.GONE);
+        }
+
     }
 
     private void initializePlayer(String videoURL){
@@ -103,6 +149,12 @@ public class VideoPlayerFragment extends Fragment{
 
     public void setVideoUrl(String videoURL){
         this.videoURL = videoURL;
+    }
+    public void setThumbnailUrl(String thumbURL){
+        this.thumbURL = thumbURL;
+    }
+    public void setRecipeDescription(String description){
+        this.description = description;
     }
     /**
      * Release ExoPlayer.
