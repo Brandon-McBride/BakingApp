@@ -70,14 +70,22 @@ public class VideoPlayerFragment extends Fragment{
         ivThumbnail = rootView.findViewById(R.id.iv_thumb);
         recipeDescription = rootView.findViewById(R.id.tv_recipe_description);
 
-        //init player
-        initializePlayer(videoURL);
+        if(savedInstanceState != null){
 
-        //initialize thumbnail
-        initalizeThumbnail(thumbURL);
+            videoURL = savedInstanceState.getString("videourl");
+            thumbURL = savedInstanceState.getString("thumburl");
+            playerPosition = savedInstanceState.getLong("playerPosition");
+            description = savedInstanceState.getString("description");
 
-        //load recipe step into textview
-        recipeDescription.setText(description);
+        }
+           //init player
+            initializePlayer(videoURL);
+
+            //initialize thumbnail
+            initalizeThumbnail(thumbURL);
+
+            //load recipe step into textview
+            recipeDescription.setText(description);
 
 
         return rootView;
@@ -172,6 +180,7 @@ public class VideoPlayerFragment extends Fragment{
         if (player == null) {
             // do nothing
         } else {
+            playerPosition = player.getCurrentPosition();
             player.stop();
             player.release();
             player = null;
@@ -181,19 +190,22 @@ public class VideoPlayerFragment extends Fragment{
     @Override
     public void onPause() {
         super.onPause();
-        if (player != null) {
-            playerPosition = player.getCurrentPosition();
-            player.stop();
-            player.release();
-            player = null;
-        }
+        //release player
+        releasePlayer();
     }
+
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
 
         //save the position of the video player
-        outState.putLong("video_position", playerPosition);
+        outState.putLong("playerposition", playerPosition);
+        //video url
+        outState.putString("videoURL", videoURL);
+        //thumurl
+        outState.putString("thumbURL", thumbURL);
+        //step description
+        outState.putString("stepdescription", description);
     }
 }
