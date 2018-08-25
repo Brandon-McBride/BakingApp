@@ -41,8 +41,6 @@ public class StepDetailActivity extends AppCompatActivity implements View.OnClic
         //set the current step
         currentStep = stepList.get(stepPosition);
 
-
-        if(!currentStep.getVideoURL().isEmpty()){
             //create a new instance of the ingredient fragment
             VideoPlayerFragment videoFragment = new VideoPlayerFragment();
 
@@ -59,9 +57,6 @@ public class StepDetailActivity extends AppCompatActivity implements View.OnClic
                     .add(R.id.video_container,videoFragment)
                     .commit();
 
-        }else{
-            //hide
-        }
 
         Button prevButton = findViewById(R.id.btn_prev);
         Button nextButton = findViewById(R.id.btn_next);
@@ -89,6 +84,7 @@ public class StepDetailActivity extends AppCompatActivity implements View.OnClic
                 VideoPlayerFragment videoFragment = new VideoPlayerFragment();
 
                 currentStep = stepList.get(stepPosition-1);
+                stepPosition-=1;
                 //update ingredient list
                 videoFragment.setVideoUrl(currentStep.getVideoURL());
                 videoFragment.setThumbnailUrl(currentStep.getThumbnailURL());
@@ -118,11 +114,11 @@ public class StepDetailActivity extends AppCompatActivity implements View.OnClic
                         player.stop();
                     }
                     //update
-//update
                     //create a new instance of the ingredient fragment
                     VideoPlayerFragment videoFragment = new VideoPlayerFragment();
 
                     currentStep = stepList.get(stepPosition+1);
+                    stepPosition+=1;
                     //update ingredient list
                     videoFragment.setVideoUrl(currentStep.getVideoURL());
                     videoFragment.setThumbnailUrl(currentStep.getThumbnailURL());
@@ -134,7 +130,6 @@ public class StepDetailActivity extends AppCompatActivity implements View.OnClic
                     //fragment transaction
                     fragmentManager.beginTransaction()
                             .replace(R.id.video_container,videoFragment)
-                            .addToBackStack(null)
                             .commit();
 
 

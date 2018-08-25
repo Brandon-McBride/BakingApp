@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,9 +46,9 @@ public class VideoPlayerFragment extends Fragment{
     private PlayerView playerView;
     private Long playerPosition;
     private View rootView;
-    private String videoURL = "";
-    private String thumbURL = "";
-    private String description = "";
+    private String videoURL;
+    private String thumbURL;
+    private String description;
 
     //mandatory constructor for instantiating the fragment
     public VideoPlayerFragment(){
@@ -74,7 +75,7 @@ public class VideoPlayerFragment extends Fragment{
 
         //initialize thumbnail
         initalizeThumbnail(thumbURL);
-        //set text
+
         //load recipe step into textview
         recipeDescription.setText(description);
 
@@ -114,37 +115,45 @@ public class VideoPlayerFragment extends Fragment{
     }
 
     private void initializePlayer(String videoURL){
-        // 1. Create a default TrackSelector
-        Handler mainHandler = new Handler();
-        BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
-        TrackSelection.Factory videoTrackSelectionFactory =
-                new AdaptiveTrackSelection.Factory(bandwidthMeter);
-        DefaultTrackSelector trackSelector =
-                new DefaultTrackSelector(videoTrackSelectionFactory);
 
-        // 2. Create the player
-         player = ExoPlayerFactory.newSimpleInstance(getContext(), trackSelector);
-
-        //Initialize the Player View
-
-        playerView.setPlayer(player);
-
-        // Produces DataSource instances through which media data is loaded.
-        DataSource.Factory dataSourceFactory =
-                new DefaultDataSourceFactory(getContext(), Util.getUserAgent(getContext(), "Recipe Step"));
-
-        // Produces Extractor instances for parsing the media data.
-        ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
-
-        // This is the MediaSource representing the media to be played.
-        Uri videoUri = Uri.parse(videoURL);
-        MediaSource videoSource = new ExtractorMediaSource.Factory(dataSourceFactory)
-                .createMediaSource(videoUri);
+       //check if there is a videoURL
+        if(!videoURL.isEmpty()) {
 
 
-        // Prepare the player with the source.
-        player.prepare(videoSource);
+            // 1. Create a default TrackSelector
+            Handler mainHandler = new Handler();
+            BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
+            TrackSelection.Factory videoTrackSelectionFactory =
+                    new AdaptiveTrackSelection.Factory(bandwidthMeter);
+            DefaultTrackSelector trackSelector =
+                    new DefaultTrackSelector(videoTrackSelectionFactory);
 
+            // 2. Create the player
+            player = ExoPlayerFactory.newSimpleInstance(getContext(), trackSelector);
+
+            //Initialize the Player View
+
+            playerView.setPlayer(player);
+
+            // Produces DataSource instances through which media data is loaded.
+            DataSource.Factory dataSourceFactory =
+                    new DefaultDataSourceFactory(getContext(), Util.getUserAgent(getContext(), "Recipe Step"));
+
+            // Produces Extractor instances for parsing the media data.
+            ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
+
+            // This is the MediaSource representing the media to be played.
+            Uri videoUri = Uri.parse(videoURL);
+            MediaSource videoSource = new ExtractorMediaSource.Factory(dataSourceFactory)
+                    .createMediaSource(videoUri);
+
+
+            // Prepare the player with the source.
+            player.prepare(videoSource);
+        }else{
+            //hide the playerview
+            playerView.setVisibility(View.GONE);
+        }
     }
 
     public void setVideoUrl(String videoURL){
