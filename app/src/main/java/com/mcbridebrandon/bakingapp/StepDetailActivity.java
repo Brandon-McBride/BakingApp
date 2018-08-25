@@ -2,6 +2,7 @@ package com.mcbridebrandon.bakingapp;
 
 import android.content.Intent;
 import android.os.Parcelable;
+import android.os.PersistableBundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -25,37 +26,42 @@ public class StepDetailActivity extends AppCompatActivity implements View.OnClic
     private Step currentStep;
     private int stepPosition;
     private SimpleExoPlayer player;
-    private Long playerPosition;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_step_detail);
+        if (savedInstanceState != null) {
+            currentStep = savedInstanceState.getParcelable("step");
+            stepList = savedInstanceState.getParcelableArrayList("steplist");
+            stepPosition = savedInstanceState.getInt("stepposition");
+        } else {
 
-        //get the bundle from StepDetailActivity
-        Bundle bundle = getIntent().getExtras();
-        //get the step list
-        stepList = bundle.getParcelableArrayList("steplist");
-        //get the position clicked on
-        stepPosition = bundle.getInt("position");
-        //set the current step
-        currentStep = stepList.get(stepPosition);
+            //get the bundle from StepDetailActivity
+            Bundle bundle = getIntent().getExtras();
+            //get the step list
+            stepList = bundle.getParcelableArrayList("steplist");
+            //get the position clicked on
+            stepPosition = bundle.getInt("position");
+            //set the current step
+            currentStep = stepList.get(stepPosition);
+        }
+        //create a new instance of the ingredient fragment
+        VideoPlayerFragment videoFragment = new VideoPlayerFragment();
 
-            //create a new instance of the ingredient fragment
-            VideoPlayerFragment videoFragment = new VideoPlayerFragment();
+        //update ingredient list
+        videoFragment.setVideoUrl(currentStep.getVideoURL());
+        videoFragment.setThumbnailUrl(currentStep.getThumbnailURL());
+        videoFragment.setRecipeDescription(currentStep.getDescription());
 
-            //update ingredient list
-            videoFragment.setVideoUrl(currentStep.getVideoURL());
-            videoFragment.setThumbnailUrl(currentStep.getThumbnailURL());
-            videoFragment.setRecipeDescription(currentStep.getDescription());
+        //use the fragment manager and transaction to add the fragment to the screen
+        FragmentManager fragmentManager = getSupportFragmentManager();
 
-            //use the fragment manager and transaction to add the fragment to the screen
-            FragmentManager fragmentManager = getSupportFragmentManager();
-
-            //fragment transaction
-            fragmentManager.beginTransaction()
-                    .add(R.id.video_container,videoFragment)
-                    .commit();
+        //fragment transaction
+        fragmentManager.beginTransaction()
+                .add(R.id.video_container, videoFragment)
+                .commit();
 
 
         Button prevButton = findViewById(R.id.btn_prev);
@@ -68,48 +74,14 @@ public class StepDetailActivity extends AppCompatActivity implements View.OnClic
 
     @Override
     public void onClick(View v) {
-        int lastPosition = stepList.size()-1;
+        int lastPosition = stepList.size() - 1;
 
         switch (v.getId()) {
             case R.id.btn_prev:
                 //previous button was pressed
                 //load previous step
-            if(currentStep.getId() > 0)
-            {
-                if (player!=null){
-                    player.stop();
-                }
-                //update
-                //create a new instance of the ingredient fragment
-                VideoPlayerFragment videoFragment = new VideoPlayerFragment();
-
-                currentStep = stepList.get(stepPosition-1);
-                stepPosition-=1;
-                //update ingredient list
-                videoFragment.setVideoUrl(currentStep.getVideoURL());
-                videoFragment.setThumbnailUrl(currentStep.getThumbnailURL());
-                videoFragment.setRecipeDescription(currentStep.getDescription());
-
-                //use the fragment manager and transaction to add the fragment to the screen
-                FragmentManager fragmentManager = getSupportFragmentManager();
-
-                //fragment transaction
-                fragmentManager.beginTransaction()
-                        .replace(R.id.video_container,videoFragment)
-                        .addToBackStack(null)
-                        .commit();
-
-                
-            }
-            else {
-                Toast.makeText(this,"Already at the First Step", Toast.LENGTH_SHORT).show();
-            }
-             break;
-
-            case R.id.btn_next:
-                //next button was pressed
-                //load next step
-                if(currentStep.getId() < stepList.get(lastPosition).getId()) {
+                if (currentStep.getId() > 0) {
+                    //dont think i need this here i beleve its don in the fragment
                     if (player != null) {
                         player.stop();
                     }
@@ -117,8 +89,8 @@ public class StepDetailActivity extends AppCompatActivity implements View.OnClic
                     //create a new instance of the ingredient fragment
                     VideoPlayerFragment videoFragment = new VideoPlayerFragment();
 
-                    currentStep = stepList.get(stepPosition+1);
-                    stepPosition+=1;
+                    currentStep = stepList.get(stepPosition - 1);
+                    stepPosition -= 1;
                     //update ingredient list
                     videoFragment.setVideoUrl(currentStep.getVideoURL());
                     videoFragment.setThumbnailUrl(currentStep.getThumbnailURL());
@@ -129,26 +101,57 @@ public class StepDetailActivity extends AppCompatActivity implements View.OnClic
 
                     //fragment transaction
                     fragmentManager.beginTransaction()
-                            .replace(R.id.video_container,videoFragment)
+                            .replace(R.id.video_container, videoFragment)
+                            .addToBackStack(null)
                             .commit();
 
 
-                }else
-                {
-                    Toast.makeText(this,"Already at the Final Step", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(this, "Already at the First Step", Toast.LENGTH_SHORT).show();
                 }
                 break;
 
+            case R.id.btn_next:
+                //next button was pressed
+                //load next step
+                if (currentStep.getId() < stepList.get(lastPosition).getId()) {
+                    if (player != null) {
+                        player.stop();
+                    }
+                    //update
+                    //create a new instance of the ingredient fragment
+                    VideoPlayerFragment videoFragment = new VideoPlayerFragment();
+
+                    currentStep = stepList.get(stepPosition + 1);
+                    stepPosition += 1;
+                    //update ingredient list
+                    videoFragment.setVideoUrl(currentStep.getVideoURL());
+                    videoFragment.setThumbnailUrl(currentStep.getThumbnailURL());
+                    videoFragment.setRecipeDescription(currentStep.getDescription());
+
+                    //use the fragment manager and transaction to add the fragment to the screen
+                    FragmentManager fragmentManager = getSupportFragmentManager();
+
+                    //fragment transaction
+                    fragmentManager.beginTransaction()
+                            .replace(R.id.video_container, videoFragment)
+                            .commit();
+
+
+                } else {
+                    Toast.makeText(this, "Already at the Final Step", Toast.LENGTH_SHORT).show();
+                }
+                break;
         }
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState, outPersistentState);
 
-
-
-
-
-
-
-
-
+        outState.putParcelableArrayList("steplist", stepList);
+        outState.putParcelable("step", currentStep);
+        outState.putInt("stepposition", stepPosition);
     }
+
+}
