@@ -11,6 +11,7 @@ import com.mcbridebrandon.bakingapp.adapters.IngredientAdapter;
 import com.mcbridebrandon.bakingapp.adapters.StepAdapter;
 import com.mcbridebrandon.bakingapp.fragments.IngredientListFragment;
 import com.mcbridebrandon.bakingapp.fragments.StepListFragment;
+import com.mcbridebrandon.bakingapp.fragments.VideoPlayerFragment;
 import com.mcbridebrandon.bakingapp.model.Ingredient;
 import com.mcbridebrandon.bakingapp.model.Recipe;
 import com.mcbridebrandon.bakingapp.model.Step;
@@ -34,50 +35,122 @@ public class RecipeDetailActivity extends AppCompatActivity{
     private RecyclerView mStepRecyclerView;
     private StepAdapter mStepAdapter;
 
+    //video fragment
+    private Step currentStep;
+    private int stepPosition;
+
+
+    //boolean to check if app is in two pane tablet mode
+    private boolean mTwoPane;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_detail);
 
-        if(savedInstanceState != null){
-            mRecipe = savedInstanceState.getParcelable("recipe");
+        if(findViewById(R.id.two_pane_layout) != null){
+            mTwoPane = true;
 
-        }else {
-            Bundle bundle = getIntent().getExtras();
-            mRecipe = bundle.getParcelable("recipe");
-        }
+            if (savedInstanceState != null) {
+                mRecipe = savedInstanceState.getParcelable("recipe");
+
+            } else {
+                Bundle bundle = getIntent().getExtras();
+                mRecipe = bundle.getParcelable("recipe");
+            }
 
             mIngredients = mRecipe.getIngredients();
             mSteps = mRecipe.getSteps();
             Log.d(TAG, "#" + mSteps);
 
 
-        //create a new instance of the ingredient fragment
-        IngredientListFragment ingredientFragment = new IngredientListFragment();
+            //create a new instance of the ingredient fragment
+            IngredientListFragment ingredientFragment = new IngredientListFragment();
 
-        //update ingredient list
-        ingredientFragment.setIngredientsList(mIngredients);
+            //update ingredient list
+            ingredientFragment.setIngredientsList(mIngredients);
 
-        //use the fragment manager and transaction to add the fragment to the screen
-        FragmentManager fragmentManager = getSupportFragmentManager();
+            //use the fragment manager and transaction to add the fragment to the screen
+            FragmentManager fragmentManager = getSupportFragmentManager();
 
-        //fragment transaction
-        fragmentManager.beginTransaction()
-                .add(R.id.ingredient_container,ingredientFragment)
-                .commit();
+            //fragment transaction
+            fragmentManager.beginTransaction()
+                    .add(R.id.ingredient_container, ingredientFragment)
+                    .commit();
 
 
-        //create a new instance of the ingredient fragment
-        StepListFragment stepFragment = new StepListFragment();
+            //create a new instance of the ingredient fragment
+            StepListFragment stepFragment = new StepListFragment();
 
-        //update ingredient list
-        stepFragment.setStepList(mSteps);
+            //update ingredient list
+            stepFragment.setStepList(mSteps);
 
-        //fragment transaction
-        fragmentManager.beginTransaction()
-                .add(R.id.step_container,stepFragment)
-                .commit();
+            //fragment transaction
+            fragmentManager.beginTransaction()
+                    .add(R.id.step_container, stepFragment)
+                    .commit();
 
+            //load first step
+            stepPosition = 0;
+            currentStep = mSteps.get(stepPosition);
+            //create a new instance of the ingredient fragment
+            VideoPlayerFragment videoFragment = new VideoPlayerFragment();
+
+            //update ingredient list
+            videoFragment.setVideoUrl(currentStep.getVideoURL());
+            videoFragment.setThumbnailUrl(currentStep.getThumbnailURL());
+            videoFragment.setRecipeDescription(currentStep.getDescription());
+
+            //fragment transaction
+            fragmentManager.beginTransaction()
+                    .replace(R.id.video_container, videoFragment)
+                    .addToBackStack(null)
+                    .commit();
+
+
+        }
+        else {
+            mTwoPane = false;
+
+            if (savedInstanceState != null) {
+                mRecipe = savedInstanceState.getParcelable("recipe");
+
+            } else {
+                Bundle bundle = getIntent().getExtras();
+                mRecipe = bundle.getParcelable("recipe");
+            }
+
+            mIngredients = mRecipe.getIngredients();
+            mSteps = mRecipe.getSteps();
+            Log.d(TAG, "#" + mSteps);
+
+
+            //create a new instance of the ingredient fragment
+            IngredientListFragment ingredientFragment = new IngredientListFragment();
+
+            //update ingredient list
+            ingredientFragment.setIngredientsList(mIngredients);
+
+            //use the fragment manager and transaction to add the fragment to the screen
+            FragmentManager fragmentManager = getSupportFragmentManager();
+
+            //fragment transaction
+            fragmentManager.beginTransaction()
+                    .add(R.id.ingredient_container, ingredientFragment)
+                    .commit();
+
+
+            //create a new instance of the ingredient fragment
+            StepListFragment stepFragment = new StepListFragment();
+
+            //update ingredient list
+            stepFragment.setStepList(mSteps);
+
+            //fragment transaction
+            fragmentManager.beginTransaction()
+                    .add(R.id.step_container, stepFragment)
+                    .commit();
+        }
     }
 
     @Override

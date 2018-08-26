@@ -109,7 +109,6 @@ public class StepDetailActivity extends AppCompatActivity implements View.OnClic
                     //fragment transaction
                     fragmentManager.beginTransaction()
                             .replace(R.id.video_container, videoFragment)
-                            .addToBackStack(null)
                             .commit();
 
                 } else {

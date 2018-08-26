@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/two_pane_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal">
 
 
-
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="400dp"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
@@ -21,17 +21,27 @@
             android:id="@+id/step_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:scaleType="centerInside" />
+            android:scaleType="centerInside" >
+
+
+        </FrameLayout>
 
     </LinearLayout>
+    <View
+        android:id="@+id/view"
+        android:layout_width="1dp"
+        android:layout_height="match_parent" />
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-    <FrameLayout
-        android:id="@+id/video_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:scaleType="centerInside" />
+
+        <FrameLayout
+            android:id="@+id/video_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="centerInside" />
     </LinearLayout>
 </LinearLayout>
