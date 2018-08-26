@@ -207,7 +207,7 @@ public class VideoPlayerFragment extends Fragment{
             //save the position of the video player
             outState.putLong("playerposition", playerPosition);
         }
-        
+
         //video url
         outState.putString("videoURL", videoURL);
         //thumurl
