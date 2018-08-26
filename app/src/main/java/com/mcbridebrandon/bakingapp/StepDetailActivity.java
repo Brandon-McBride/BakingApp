@@ -3,6 +3,7 @@ package com.mcbridebrandon.bakingapp;
 import android.content.Intent;
 import android.os.Parcelable;
 import android.os.PersistableBundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -33,8 +34,9 @@ public class StepDetailActivity extends AppCompatActivity implements View.OnClic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_step_detail);
         if (savedInstanceState != null) {
-            currentStep = savedInstanceState.getParcelable("step");
+
             stepList = savedInstanceState.getParcelableArrayList("steplist");
+            currentStep = savedInstanceState.getParcelable("step");
             stepPosition = savedInstanceState.getInt("stepposition");
 
         } else {
@@ -150,8 +152,8 @@ public class StepDetailActivity extends AppCompatActivity implements View.OnClic
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
-        super.onSaveInstanceState(outState, outPersistentState);
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
 
         outState.putParcelableArrayList("steplist", stepList);
         outState.putParcelable("step", currentStep);

@@ -203,8 +203,11 @@ public class VideoPlayerFragment extends Fragment{
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        //save the position of the video player
-        outState.putLong("playerposition", playerPosition);
+        if(playerPosition != null){
+            //save the position of the video player
+            outState.putLong("playerposition", playerPosition);
+        }
+        
         //video url
         outState.putString("videoURL", videoURL);
         //thumurl
