@@ -1,6 +1,7 @@
 package com.mcbridebrandon.bakingapp;
 
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -14,6 +15,7 @@ import com.mcbridebrandon.bakingapp.model.Ingredient;
 import com.mcbridebrandon.bakingapp.model.Recipe;
 import com.mcbridebrandon.bakingapp.model.Step;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -37,14 +39,17 @@ public class RecipeDetailActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_detail);
 
-        Bundle bundle = getIntent().getExtras();
-        mRecipe = bundle.getParcelable("recipe");
+        if(savedInstanceState != null){
+            mRecipe = savedInstanceState.getParcelable("recipe");
 
+        }else {
+            Bundle bundle = getIntent().getExtras();
+            mRecipe = bundle.getParcelable("recipe");
+        }
 
-
-        mIngredients = mRecipe.getIngredients();
-        mSteps = mRecipe.getSteps();
-        Log.d(TAG, "#"+ mSteps);
+            mIngredients = mRecipe.getIngredients();
+            mSteps = mRecipe.getSteps();
+            Log.d(TAG, "#" + mSteps);
 
 
         //create a new instance of the ingredient fragment
@@ -73,5 +78,11 @@ public class RecipeDetailActivity extends AppCompatActivity{
                 .add(R.id.step_container,stepFragment)
                 .commit();
 
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable("recipe",mRecipe);
     }
 }

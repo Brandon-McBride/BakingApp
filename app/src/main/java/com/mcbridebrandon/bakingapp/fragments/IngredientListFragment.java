@@ -1,5 +1,7 @@
 package com.mcbridebrandon.bakingapp.fragments;
 
+import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,6 +15,7 @@ import com.mcbridebrandon.bakingapp.R;
 import com.mcbridebrandon.bakingapp.adapters.IngredientAdapter;
 import com.mcbridebrandon.bakingapp.model.Ingredient;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class IngredientListFragment extends Fragment {
@@ -32,6 +35,9 @@ public class IngredientListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
 
+        if(savedInstanceState != null){
+            ingredientList = savedInstanceState.getParcelableArrayList("ingredientList");
+        }
         //inflate the ingredient list layout
         View rootView = inflater.inflate(R.layout.fragment_ingredient_list,container,false);
 
@@ -53,5 +59,11 @@ public class IngredientListFragment extends Fragment {
 
     public void setIngredientsList(List<Ingredient> ingredientsList) {
         this.ingredientList = ingredientsList;
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList("ingredientList", (ArrayList<? extends Parcelable>) ingredientList);
     }
 }
