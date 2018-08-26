@@ -72,10 +72,10 @@ public class VideoPlayerFragment extends Fragment{
 
         if(savedInstanceState != null){
 
-            videoURL = savedInstanceState.getString("videourl");
-            thumbURL = savedInstanceState.getString("thumburl");
-            playerPosition = savedInstanceState.getLong("playerPosition");
-            description = savedInstanceState.getString("description");
+            videoURL = savedInstanceState.getString("videoURL");
+            thumbURL = savedInstanceState.getString("thumbURL");
+            playerPosition = savedInstanceState.getLong("playerposition");
+            description = savedInstanceState.getString("stepdescription");
 
         }
            //init player
@@ -158,6 +158,10 @@ public class VideoPlayerFragment extends Fragment{
 
             // Prepare the player with the source.
             player.prepare(videoSource);
+
+            if(playerPosition != null){
+                player.seekTo(playerPosition);
+            }
         }else{
             //hide the playerview
             playerView.setVisibility(View.GONE);

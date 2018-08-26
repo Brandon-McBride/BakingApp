@@ -36,21 +36,24 @@ public class StepDetailActivity extends AppCompatActivity implements View.OnClic
             currentStep = savedInstanceState.getParcelable("step");
             stepList = savedInstanceState.getParcelableArrayList("steplist");
             stepPosition = savedInstanceState.getInt("stepposition");
+
         } else {
 
-            //get the bundle from StepDetailActivity
+            //Get the bundle from StepDetailActivity
             Bundle bundle = getIntent().getExtras();
-            //get the step list
+            //Get the step list
             stepList = bundle.getParcelableArrayList("steplist");
-            //get the position clicked on
+            //Get the position clicked on in StepDetailActivity
             stepPosition = bundle.getInt("position");
-            //set the current step
+
+
+            //Set the current step
             currentStep = stepList.get(stepPosition);
-        }
+
         //create a new instance of the ingredient fragment
         VideoPlayerFragment videoFragment = new VideoPlayerFragment();
 
-        //update ingredient list
+        //Update the video fragment with data
         videoFragment.setVideoUrl(currentStep.getVideoURL());
         videoFragment.setThumbnailUrl(currentStep.getThumbnailURL());
         videoFragment.setRecipeDescription(currentStep.getDescription());
@@ -62,11 +65,13 @@ public class StepDetailActivity extends AppCompatActivity implements View.OnClic
         fragmentManager.beginTransaction()
                 .add(R.id.video_container, videoFragment)
                 .commit();
+    }
 
-
+        //get reference to the next/prev buttons
         Button prevButton = findViewById(R.id.btn_prev);
         Button nextButton = findViewById(R.id.btn_next);
 
+        //set the onclick listener for the buttons
         prevButton.setOnClickListener(this);
         nextButton.setOnClickListener(this);
 
@@ -104,7 +109,6 @@ public class StepDetailActivity extends AppCompatActivity implements View.OnClic
                             .replace(R.id.video_container, videoFragment)
                             .addToBackStack(null)
                             .commit();
-
 
                 } else {
                     Toast.makeText(this, "Already at the First Step", Toast.LENGTH_SHORT).show();
