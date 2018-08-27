@@ -26,6 +26,7 @@ public class StepListFragment extends Fragment implements StepAdapter.ItemClickL
     private StepAdapter mStepAdapter;
     private RecyclerView mStepRecyclerView;
     private List<Step> stepList;
+    private boolean mTwoPane;
 
     //mandatory constructor for instantiating the fragment
     public StepListFragment(){
@@ -62,21 +63,21 @@ public class StepListFragment extends Fragment implements StepAdapter.ItemClickL
     public void setStepList(List<Step> stepList) {
         this.stepList = stepList;
     }
+    public void setTwoPane(boolean mTwoPane){this.mTwoPane = mTwoPane;}
 
     @Override
     public void onItemClick(int position) {
-        Step stepToSend;
-
-        //int stepPosition = position;
-
-
-        stepToSend = stepList.get(position);
-        Bundle bundle = new Bundle();
-        bundle.putParcelableArrayList("steplist", (ArrayList<? extends Parcelable>) stepList);
-        bundle.putInt("position", position);
-        Intent intent = new Intent(getContext(), StepDetailActivity.class);
-        intent.putExtras(bundle);
-        startActivity(intent);
+        if(mTwoPane == false) {
+            Step stepToSend;
+            //int stepPosition = position;
+            stepToSend = stepList.get(position);
+            Bundle bundle = new Bundle();
+            bundle.putParcelableArrayList("steplist", (ArrayList<? extends Parcelable>) stepList);
+            bundle.putInt("position", position);
+            Intent intent = new Intent(getContext(), StepDetailActivity.class);
+            intent.putExtras(bundle);
+            startActivity(intent);
+        }
     }
 
     @Override

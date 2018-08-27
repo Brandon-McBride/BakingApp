@@ -145,6 +145,7 @@ public class RecipeDetailActivity extends AppCompatActivity{
 
             //update ingredient list
             stepFragment.setStepList(mSteps);
+            stepFragment.setTwoPane(mTwoPane);
 
             //fragment transaction
             fragmentManager.beginTransaction()
@@ -158,4 +159,6 @@ public class RecipeDetailActivity extends AppCompatActivity{
         super.onSaveInstanceState(outState);
         outState.putParcelable("recipe",mRecipe);
     }
+
+
 }
