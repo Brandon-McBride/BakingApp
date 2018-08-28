@@ -20,6 +20,8 @@ import com.mcbridebrandon.bakingapp.model.Step;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.security.auth.callback.Callback;
+
 public class StepListFragment extends Fragment implements StepAdapter.ItemClickListener{
 
     private View rootView;
@@ -27,12 +29,16 @@ public class StepListFragment extends Fragment implements StepAdapter.ItemClickL
     private RecyclerView mStepRecyclerView;
     private List<Step> stepList;
     private boolean mTwoPane;
+    private onStepClickListener mCallback;
 
     //mandatory constructor for instantiating the fragment
     public StepListFragment(){
 
     }
-
+    //interface for onclick
+    public interface onStepClickListener{
+        void onStepItemClick(int position);
+    }
 
     @Nullable
     @Override
@@ -67,7 +73,7 @@ public class StepListFragment extends Fragment implements StepAdapter.ItemClickL
 
     @Override
     public void onItemClick(int position) {
-        if(mTwoPane == false) {
+        if(!mTwoPane) {
             Step stepToSend;
             //int stepPosition = position;
             stepToSend = stepList.get(position);
@@ -77,6 +83,8 @@ public class StepListFragment extends Fragment implements StepAdapter.ItemClickL
             Intent intent = new Intent(getContext(), StepDetailActivity.class);
             intent.putExtras(bundle);
             startActivity(intent);
+        }else {
+            mCallback.onStepItemClick(position);
         }
     }
 

@@ -25,7 +25,7 @@ import java.util.List;
  * item details are presented side-by-side with a list of items
  * in a {@link RecipeListActivity}.
  */
-public class RecipeDetailActivity extends AppCompatActivity{
+public class RecipeDetailActivity extends AppCompatActivity implements StepListFragment.onStepClickListener{
     private static final String TAG = "DETAIL";
     private Recipe mRecipe;
     private List<Ingredient> mIngredients;
@@ -84,6 +84,7 @@ public class RecipeDetailActivity extends AppCompatActivity{
 
             //update ingredient list
             stepFragment.setStepList(mSteps);
+            stepFragment.setTwoPane(mTwoPane);
 
             //fragment transaction
             fragmentManager.beginTransaction()
@@ -160,5 +161,24 @@ public class RecipeDetailActivity extends AppCompatActivity{
         outState.putParcelable("recipe",mRecipe);
     }
 
+    @Override
+    public void onStepItemClick(int position) {
+            currentStep = mSteps.get(position);
+            //create a new instance of the ingredient fragment
+            VideoPlayerFragment videoFragment = new VideoPlayerFragment();
 
+            //Update the video fragment with data
+            videoFragment.setVideoUrl(currentStep.getVideoURL());
+            videoFragment.setThumbnailUrl(currentStep.getThumbnailURL());
+            videoFragment.setRecipeDescription(currentStep.getDescription());
+
+            //use the fragment manager and transaction to add the fragment to the screen
+            FragmentManager fragmentManager = getSupportFragmentManager();
+
+            //fragment transaction
+            fragmentManager.beginTransaction()
+                    .replace(R.id.video_container, videoFragment)
+                    .commit();
+
+    }
 }
