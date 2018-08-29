@@ -159,7 +159,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements StepListF
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putParcelable("recipe",mRecipe);
-        
+
     }
 
     @Override
