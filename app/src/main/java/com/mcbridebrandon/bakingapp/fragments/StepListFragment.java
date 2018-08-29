@@ -1,5 +1,6 @@
 package com.mcbridebrandon.bakingapp.fragments;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -37,7 +38,22 @@ public class StepListFragment extends Fragment implements StepAdapter.ItemClickL
     }
     //interface for onclick
     public interface onStepClickListener{
-        void onStepItemClick(int position);
+      public void onStepItemClick(int position);
+    }
+
+    //override onAttach to make sure that the container activity has implemented the callback
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        // This makes sure that the host activity has implemented the callback interface
+        // If not, it throws an exception
+        try {
+            mCallback = (onStepClickListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString()
+                    + " must implement onStepClickListener");
+        }
     }
 
     @Nullable
