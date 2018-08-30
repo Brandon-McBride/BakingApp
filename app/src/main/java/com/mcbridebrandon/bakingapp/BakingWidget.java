@@ -10,14 +10,14 @@ import android.widget.RemoteViews;
 /**
  * Implementation of App Widget functionality.
  */
-public class BakingWidgetProvider extends AppWidgetProvider {
+public class BakingWidget extends AppWidgetProvider {
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
 
         CharSequence widgetText = context.getString(R.string.appwidget_text);
         // Construct the RemoteViews object
-        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.baking_widget_provider);
+        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.baking_widget);
         views.setTextViewText(R.id.appwidget_text, widgetText);
 
         // Create an Intent to launch MainActivity when clicked
