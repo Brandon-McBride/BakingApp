@@ -12,9 +12,9 @@ import android.widget.RemoteViews;
  * App Widget Configuration implemented in {@link BakingWidgetConfigureActivity BakingWidgetConfigureActivity}
  */
 public class BakingWidget extends AppWidgetProvider {
-    private final String APP_TITLE = "BakingApp";
+    private static final String PREFS_NAME = "BakingApp";
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
-                                int appWidgetId,String ingredients, String recipeName) {
+                                int appWidgetId,String recipeName, String ingredients) {
 
 
         // Construct the RemoteViews object
@@ -27,13 +27,13 @@ public class BakingWidget extends AppWidgetProvider {
         appWidgetManager.updateAppWidget(appWidgetId, views);
     }
     private String getIngredients(Context context){
-        SharedPreferences pref = context.getSharedPreferences(APP_TITLE, 0);
+        SharedPreferences pref = context.getSharedPreferences(PREFS_NAME, 0);
         String WIDGET_INGREDIENTS = "ingredients";
         return pref.getString(WIDGET_INGREDIENTS, null);
     }
 
     private String getRecipeName(Context context){
-        SharedPreferences pref = context.getSharedPreferences(APP_TITLE, 0);
+        SharedPreferences pref = context.getSharedPreferences(PREFS_NAME, 0);
         String WIDGET_RECIPE_NAME = "recipeName";
         return pref.getString(WIDGET_RECIPE_NAME, null);
     }
@@ -45,7 +45,7 @@ public class BakingWidget extends AppWidgetProvider {
         // There may be multiple widgets active, so update all of them
         for (int appWidgetId : appWidgetIds) {
 
-            updateAppWidget(context, appWidgetManager, appWidgetId,getIngredients(context), getRecipeName(context));
+            updateAppWidget(context, appWidgetManager, appWidgetId,getRecipeName(context),getIngredients(context));
         }
     }
 

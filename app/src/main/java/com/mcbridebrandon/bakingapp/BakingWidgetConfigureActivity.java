@@ -113,36 +113,6 @@ public class BakingWidgetConfigureActivity extends Activity implements RecipeAda
                 // TODO: handle error
             }});
     }
-    // Write the prefix to the SharedPreferences object for this widget
-    static void saveBakingPref(Context context, int appWidgetId, String ingredients, String recipeName) {
-        SharedPreferences.Editor prefs = context.getSharedPreferences(PREFS_NAME, 0).edit();
-        prefs.putString(PREF_RECIPE_NAME_KEY + appWidgetId, recipeName);
-        prefs.putString(PREF_INGREDIENTS_KEY + appWidgetId, ingredients);
-        prefs.apply();
-    }
-
-    // Read the prefix from the SharedPreferences object for this widget.
-    // If there is no preference saved, get the default from a resource
-    static String loadTitlePref(Context context, int appWidgetId) {
-        SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
-        String recipeName = prefs.getString(PREF_RECIPE_NAME_KEY + appWidgetId, null);
-        if (recipeName != null) {
-
-
-            return recipeName;
-        } else {
-            return context.getString(R.string.appwidget_text);
-        }
-    }
-
-    static void deleteTitlePref(Context context, int appWidgetId) {
-        SharedPreferences.Editor prefs = context.getSharedPreferences(PREFS_NAME, 0).edit();
-        prefs.remove(PREF_PREFIX_KEY + appWidgetId);
-        prefs.apply();
-    }
-
-
-
 
     @Override
     public void onItemClick(int position) {
@@ -156,13 +126,18 @@ public class BakingWidgetConfigureActivity extends Activity implements RecipeAda
        ingredientListString = buildString(mIngredientList);
 
         if (context != null) {
-            SharedPreferences pref = context.getSharedPreferences("BakingApp", 0);
+            SharedPreferences pref = context.getSharedPreferences(PREFS_NAME, 0);
             SharedPreferences.Editor editor = pref.edit();
 
-            editor.putString("ingredients", ingredientListString);
-            editor.putString("recipeName", recipeName);
+
+            editor.putString(PREF_RECIPE_NAME_KEY, recipeName);
+            editor.putString(PREF_INGREDIENTS_KEY, ingredientListString);
+
             editor.apply();
         }
+        // It is the responsibility of the configuration activity to update the app widget
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+        BakingWidget.updateAppWidget(context, appWidgetManager, mAppWidgetId, recipeName,ingredientListString);
 
         Intent resultValue = new Intent();
         resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
