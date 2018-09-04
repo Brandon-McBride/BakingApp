@@ -5,6 +5,7 @@ import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.text.method.ScrollingMovementMethod;
 import android.widget.RemoteViews;
 
 /**
@@ -13,6 +14,8 @@ import android.widget.RemoteViews;
  */
 public class BakingWidget extends AppWidgetProvider {
     private static final String PREFS_NAME = "BakingApp";
+    private static final String PREF_RECIPE_NAME_KEY = "recipeName";
+    private static final String PREF_INGREDIENTS_KEY = "ingredients";
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId,String recipeName, String ingredients) {
 
@@ -22,19 +25,18 @@ public class BakingWidget extends AppWidgetProvider {
         views.setTextViewText(R.id.appwidget_recipe_name, recipeName);
         views.setTextViewText(R.id.appwidget_ingredient_text, ingredients);
 
-
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
     }
     private String getIngredients(Context context){
         SharedPreferences pref = context.getSharedPreferences(PREFS_NAME, 0);
-        String WIDGET_INGREDIENTS = "ingredients";
+        String WIDGET_INGREDIENTS = PREF_INGREDIENTS_KEY ;
         return pref.getString(WIDGET_INGREDIENTS, null);
     }
 
     private String getRecipeName(Context context){
         SharedPreferences pref = context.getSharedPreferences(PREFS_NAME, 0);
-        String WIDGET_RECIPE_NAME = "recipeName";
+        String WIDGET_RECIPE_NAME = PREF_RECIPE_NAME_KEY;
         return pref.getString(WIDGET_RECIPE_NAME, null);
     }
 

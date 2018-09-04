@@ -167,6 +167,13 @@ public class BakingWidgetConfigureActivity extends Activity implements RecipeAda
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
+    public List<Ingredient> getmIngredientList() {
+        return mIngredientList;
+    }
+
+    public String getRecipeName() {
+        return recipeName;
+    }
 }
 
 
