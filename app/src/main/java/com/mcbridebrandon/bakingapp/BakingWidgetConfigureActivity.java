@@ -36,8 +36,9 @@ import static java.security.AccessController.getContext;
  */
 public class BakingWidgetConfigureActivity extends Activity implements RecipeAdapter.ItemClickListener {
 
-    private static final String PREFS_NAME = "com.mcbridebrandon.bakingapp.BakingWidget";
-    private static final String PREF_PREFIX_KEY = "appwidget_";
+    private static final String PREFS_NAME = "BakingApp";
+    private static final String PREF_RECIPE_NAME_KEY = "recipeName";
+    private static final String PREF_INGREDIENTS_KEY = "ingredients";
     int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
 
     private RecipeAdapter rAdapter;
@@ -84,7 +85,6 @@ public class BakingWidgetConfigureActivity extends Activity implements RecipeAda
         }
     }
 
-
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
 
     }
@@ -113,6 +113,36 @@ public class BakingWidgetConfigureActivity extends Activity implements RecipeAda
                 // TODO: handle error
             }});
     }
+    // Write the prefix to the SharedPreferences object for this widget
+    static void saveBakingPref(Context context, int appWidgetId, String ingredients, String recipeName) {
+        SharedPreferences.Editor prefs = context.getSharedPreferences(PREFS_NAME, 0).edit();
+        prefs.putString(PREF_RECIPE_NAME_KEY + appWidgetId, recipeName);
+        prefs.putString(PREF_INGREDIENTS_KEY + appWidgetId, ingredients);
+        prefs.apply();
+    }
+
+    // Read the prefix from the SharedPreferences object for this widget.
+    // If there is no preference saved, get the default from a resource
+    static String loadTitlePref(Context context, int appWidgetId) {
+        SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
+        String recipeName = prefs.getString(PREF_RECIPE_NAME_KEY + appWidgetId, null);
+        if (recipeName != null) {
+
+
+            return recipeName;
+        } else {
+            return context.getString(R.string.appwidget_text);
+        }
+    }
+
+    static void deleteTitlePref(Context context, int appWidgetId) {
+        SharedPreferences.Editor prefs = context.getSharedPreferences(PREFS_NAME, 0).edit();
+        prefs.remove(PREF_PREFIX_KEY + appWidgetId);
+        prefs.apply();
+    }
+
+
+
 
     @Override
     public void onItemClick(int position) {
