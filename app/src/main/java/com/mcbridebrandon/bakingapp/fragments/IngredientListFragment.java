@@ -22,6 +22,7 @@ public class IngredientListFragment extends Fragment {
 
     private View rootView;
     private List<Ingredient> ingredientList;
+    private static final String INGREDIENTLIST_KEY = "ingredientList";
 
     //mandatory constructor for instantiating the fragment
     public IngredientListFragment(){
@@ -34,7 +35,7 @@ public class IngredientListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
 
         if(savedInstanceState != null){
-            ingredientList = savedInstanceState.getParcelableArrayList("ingredientList");
+            ingredientList = savedInstanceState.getParcelableArrayList(INGREDIENTLIST_KEY);
         }
         //inflate the ingredient list layout
         View rootView = inflater.inflate(R.layout.fragment_ingredient_list,container,false);
@@ -62,6 +63,6 @@ public class IngredientListFragment extends Fragment {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putParcelableArrayList("ingredientList", (ArrayList<? extends Parcelable>) ingredientList);
+        outState.putParcelableArrayList(INGREDIENTLIST_KEY, (ArrayList<? extends Parcelable>) ingredientList);
     }
 }

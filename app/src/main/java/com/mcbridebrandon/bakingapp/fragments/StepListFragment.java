@@ -27,6 +27,8 @@ public class StepListFragment extends Fragment implements StepAdapter.ItemClickL
     private List<Step> stepList;
     private boolean mTwoPane;
     private onStepClickListener mCallback;
+    private static final String STEPLIST_KEY = "steplist";
+    private static final String POSITION_KEY = "position";
 
     //mandatory constructor for instantiating the fragment
     public StepListFragment(){
@@ -90,8 +92,8 @@ public class StepListFragment extends Fragment implements StepAdapter.ItemClickL
             //int stepPosition = position;
             stepToSend = stepList.get(position);
             Bundle bundle = new Bundle();
-            bundle.putParcelableArrayList("steplist", (ArrayList<? extends Parcelable>) stepList);
-            bundle.putInt("position", position);
+            bundle.putParcelableArrayList(STEPLIST_KEY, (ArrayList<? extends Parcelable>) stepList);
+            bundle.putInt(POSITION_KEY, position);
             Intent intent = new Intent(getContext(), StepDetailActivity.class);
             intent.putExtras(bundle);
             startActivity(intent);
@@ -103,6 +105,6 @@ public class StepListFragment extends Fragment implements StepAdapter.ItemClickL
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putParcelableArrayList("stepList", (ArrayList<? extends Parcelable>) stepList);
+        outState.putParcelableArrayList(STEPLIST_KEY, (ArrayList<? extends Parcelable>) stepList);
     }
 }

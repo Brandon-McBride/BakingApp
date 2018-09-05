@@ -38,6 +38,7 @@ public class RecipeListActivity extends AppCompatActivity implements RecipeAdapt
     private RecipeAdapter rAdapter;
     private RecyclerView mRecyclerView;
     private List<Recipe> mRecipeData;
+    private static final String RECIPE_KEY = "recipe";
     // The Idling Resource which will be null in production.
     @Nullable
     private SimpleIdlingResource mIdlingResource;
@@ -74,11 +75,6 @@ public class RecipeListActivity extends AppCompatActivity implements RecipeAdapt
         // Get the IdlingResource instance
         getIdlingResource();
         mIdlingResource.setIdleState(false);
-    }
-
-    private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-
-
     }
 
     private void makeNetworkCall() {
@@ -123,7 +119,7 @@ public class RecipeListActivity extends AppCompatActivity implements RecipeAdapt
         Recipe recipeToSend;
         recipeToSend = this.mRecipeData.get(position);
         Bundle bundle = new Bundle();
-        bundle.putParcelable("recipe", recipeToSend);
+        bundle.putParcelable(RECIPE_KEY, recipeToSend);
 
         Intent intent = new Intent(this, RecipeDetailActivity.class);
         intent.putExtras(bundle);

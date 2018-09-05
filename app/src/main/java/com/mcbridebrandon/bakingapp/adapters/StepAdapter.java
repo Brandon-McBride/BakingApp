@@ -3,7 +3,6 @@ package com.mcbridebrandon.bakingapp.adapters;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +15,6 @@ import java.util.List;
 
 
 public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder>{
-
-    private static final String TAG = "STEP ADAPTER";
     private List<Step> mStepList;
     private final ItemClickListener mClickListener;
 
@@ -42,8 +39,6 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull StepViewHolder holder, int position) {
-        Log.d(TAG, "#" + position + mStepList.get(position).getVideoURL());
-
         int id;
         String shortDescription;
         String description;

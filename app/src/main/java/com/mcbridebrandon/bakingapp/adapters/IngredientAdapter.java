@@ -3,7 +3,6 @@ package com.mcbridebrandon.bakingapp.adapters;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +16,6 @@ import java.util.List;
 
 public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.IngredientViewHolder>{
 
-    private static final String TAG = "INGREDIENT ADAPTER";
     private List<Ingredient> mIngredientList;
     //private final ItemClickListener mClickListener;
 
@@ -42,7 +40,6 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
 
     @Override
     public void onBindViewHolder(@NonNull IngredientViewHolder holder, int position) {
-        Log.d(TAG, "#" + position + mIngredientList);
 
         String qty = mIngredientList.get(position).getQuantity();
         String measure = mIngredientList.get(position).getMeasure();

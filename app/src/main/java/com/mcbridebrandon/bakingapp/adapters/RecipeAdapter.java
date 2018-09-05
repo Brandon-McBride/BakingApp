@@ -3,7 +3,6 @@ package com.mcbridebrandon.bakingapp.adapters;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +15,6 @@ import java.util.List;
 
 
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder>{
-
-    private static final String TAG = "MOVIE ADAPTER";
     private List<Recipe> mRecipeList;
     private final ItemClickListener mClickListener;
 
@@ -42,7 +39,6 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
 
     @Override
     public void onBindViewHolder(@NonNull RecipeViewHolder holder, int position) {
-        Log.d(TAG, "#" + position + mRecipeList.get(position).getName());
 
         if (mRecipeList != null) {
             holder.tvRecipeTitle.setText(mRecipeList.get(position).getName());

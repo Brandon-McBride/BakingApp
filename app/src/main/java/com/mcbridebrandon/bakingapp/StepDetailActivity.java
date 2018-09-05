@@ -19,6 +19,11 @@ public class StepDetailActivity extends AppCompatActivity implements View.OnClic
     private Step currentStep;
     private int stepPosition;
     private SimpleExoPlayer player;
+    private static final String STEPLIST_KEY = "steplist";
+    private static final String STEP_KEY = "step";
+    private static final String STEP_POSITION_KEY = "stepposition";
+    private static final String POSITION_KEY = "position";
+
 
 
     @Override
@@ -27,18 +32,18 @@ public class StepDetailActivity extends AppCompatActivity implements View.OnClic
         setContentView(R.layout.activity_step_detail);
         if (savedInstanceState != null) {
 
-            stepList = savedInstanceState.getParcelableArrayList("steplist");
-            currentStep = savedInstanceState.getParcelable("step");
-            stepPosition = savedInstanceState.getInt("stepposition");
+            stepList = savedInstanceState.getParcelableArrayList(STEPLIST_KEY);
+            currentStep = savedInstanceState.getParcelable(STEP_KEY);
+            stepPosition = savedInstanceState.getInt(STEP_POSITION_KEY);
 
         } else {
 
             //Get the bundle from StepDetailActivity
             Bundle bundle = getIntent().getExtras();
             //Get the step list
-            stepList = bundle.getParcelableArrayList("steplist");
+            stepList = bundle.getParcelableArrayList(STEPLIST_KEY);
             //Get the position clicked on in StepDetailActivity
-            stepPosition = bundle.getInt("position");
+            stepPosition = bundle.getInt(POSITION_KEY);
 
 
             //Set the current step
@@ -146,9 +151,9 @@ public class StepDetailActivity extends AppCompatActivity implements View.OnClic
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        outState.putParcelableArrayList("steplist", stepList);
-        outState.putParcelable("step", currentStep);
-        outState.putInt("stepposition", stepPosition);
+        outState.putParcelableArrayList(STEPLIST_KEY, stepList);
+        outState.putParcelable(STEP_KEY, currentStep);
+        outState.putInt(STEP_POSITION_KEY, stepPosition);
     }
 
 }

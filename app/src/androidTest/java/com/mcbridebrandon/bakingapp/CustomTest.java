@@ -38,12 +38,12 @@ public class CustomTest {
     @Test
     public void checkBrownieText_RecipeActivity() {
         onView(withId(R.id.rv_recipe_list)).perform(RecyclerViewActions.scrollToPosition(1));
-        onView(withText("Brownies")).check(matches(isDisplayed()));
+        onView(withText(R.string.Brownies)).check(matches(isDisplayed()));
     }
     @Test
     public void checkNutellaText_RecipeActivity() {
         onView(withId(R.id.rv_recipe_list)).perform(RecyclerViewActions.scrollToPosition(0));
-        onView(withText("Nutella Pie")).check(matches(isDisplayed()));
+        onView(withText(R.string.NutellaPie)).check(matches(isDisplayed()));
     }
 
     @Test

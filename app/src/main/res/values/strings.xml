@@ -4,4 +4,6 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="appwidget_text">EXAMPLE</string>
+    <string name="Brownies">Brownies</string>
+    <string name="NutellaPie">Nutella Pie</string>
 </resources>

@@ -8,7 +8,6 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -77,9 +76,6 @@ public class BakingWidgetConfigureActivity extends Activity implements RecipeAda
         }
     }
 
-    private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-
-    }
     private void makeNetworkCall(){
         // Create a very simple REST adapter which points the GitHub API endpoint.
         NetworkService netService = NetworkConfig.getClient().create(NetworkService.class);

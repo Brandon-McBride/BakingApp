@@ -2,9 +2,8 @@ package com.mcbridebrandon.bakingapp;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 
 import com.mcbridebrandon.bakingapp.adapters.IngredientAdapter;
 import com.mcbridebrandon.bakingapp.adapters.StepAdapter;
@@ -24,7 +23,6 @@ import java.util.List;
  * in a {@link RecipeListActivity}.
  */
 public class RecipeDetailActivity extends AppCompatActivity implements StepListFragment.onStepClickListener{
-    private static final String TAG = "DETAIL";
     private Recipe mRecipe;
     private List<Step> mSteps;
     private RecyclerView mIngredientRecyclerView;
@@ -34,7 +32,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements StepListF
 
     //video fragment
     private Step currentStep;
-
+    private static final String RECIPE_KEY = "recipe";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,17 +45,15 @@ public class RecipeDetailActivity extends AppCompatActivity implements StepListF
             mTwoPane = true;
 
             if (savedInstanceState != null) {
-                mRecipe = savedInstanceState.getParcelable("recipe");
+                mRecipe = savedInstanceState.getParcelable(RECIPE_KEY);
 
             } else {
                 Bundle bundle = getIntent().getExtras();
-                mRecipe = bundle.getParcelable("recipe");
+                mRecipe = bundle.getParcelable(RECIPE_KEY);
             }
 
             mIngredients = mRecipe.getIngredients();
             mSteps = mRecipe.getSteps();
-            Log.d(TAG, "#" + mSteps);
-
 
             //create a new instance of the ingredient fragment
             IngredientListFragment ingredientFragment = new IngredientListFragment();
@@ -109,16 +105,15 @@ public class RecipeDetailActivity extends AppCompatActivity implements StepListF
             mTwoPane = false;
 
             if (savedInstanceState != null) {
-                mRecipe = savedInstanceState.getParcelable("recipe");
+                mRecipe = savedInstanceState.getParcelable(RECIPE_KEY);
 
             } else {
                 Bundle bundle = getIntent().getExtras();
-                mRecipe = bundle.getParcelable("recipe");
+                mRecipe = bundle.getParcelable(RECIPE_KEY);
             }
 
             mIngredients = mRecipe.getIngredients();
             mSteps = mRecipe.getSteps();
-            Log.d(TAG, "#" + mSteps);
 
 
             //create a new instance of the ingredient fragment
@@ -153,7 +148,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements StepListF
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putParcelable("recipe",mRecipe);
+        outState.putParcelable(RECIPE_KEY,mRecipe);
 
     }
 

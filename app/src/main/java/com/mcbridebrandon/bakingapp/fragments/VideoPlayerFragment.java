@@ -40,15 +40,16 @@ public class VideoPlayerFragment extends Fragment{
     private String videoURL;
     private String thumbURL;
     private String description;
+    private static final String VIDEO_URL_KEY = "videoURL";
+    private static final String THUMB_URL_KEY = "thumbURL";
+    private static final String PLAYER_POSITION_KEY = "playerposition";
+    private static final String STEP_DESCRIPTION_KEY = "stepdescription";
+
+
+
 
     //mandatory constructor for instantiating the fragment
     public VideoPlayerFragment(){
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
     }
 
     @Nullable
@@ -63,10 +64,10 @@ public class VideoPlayerFragment extends Fragment{
 
         if(savedInstanceState != null){
 
-            videoURL = savedInstanceState.getString("videoURL");
-            thumbURL = savedInstanceState.getString("thumbURL");
-            playerPosition = savedInstanceState.getLong("playerposition");
-            description = savedInstanceState.getString("stepdescription");
+            videoURL = savedInstanceState.getString(VIDEO_URL_KEY);
+            thumbURL = savedInstanceState.getString(THUMB_URL_KEY);
+            playerPosition = savedInstanceState.getLong(PLAYER_POSITION_KEY);
+            description = savedInstanceState.getString(STEP_DESCRIPTION_KEY);
 
         }
            //init player
@@ -196,14 +197,14 @@ public class VideoPlayerFragment extends Fragment{
 
         if(playerPosition != null){
             //save the position of the video player
-            outState.putLong("playerposition", playerPosition);
+            outState.putLong(PLAYER_POSITION_KEY, playerPosition);
         }
 
         //video url
-        outState.putString("videoURL", videoURL);
+        outState.putString(VIDEO_URL_KEY, videoURL);
         //thumurl
-        outState.putString("thumbURL", thumbURL);
+        outState.putString(THUMB_URL_KEY, thumbURL);
         //step description
-        outState.putString("stepdescription", description);
+        outState.putString(STEP_DESCRIPTION_KEY, description);
     }
 }
