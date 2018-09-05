@@ -5,21 +5,16 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
+import android.support.test.espresso.IdlingResource;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
+import com.mcbridebrandon.bakingapp.IdlingResource.SimpleIdlingResource;
 import com.mcbridebrandon.bakingapp.adapters.RecipeAdapter;
 import com.mcbridebrandon.bakingapp.model.Recipe;
 import com.mcbridebrandon.bakingapp.utilities.NetworkConfig;
@@ -30,6 +25,7 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
 
 /**
  * An activity representing a list of Recipes. This activity
@@ -57,7 +53,6 @@ public class RecipeListActivity extends AppCompatActivity implements RecipeAdapt
         setContentView(R.layout.activity_recipe_list);
 
 
-
         if (findViewById(R.id.recipe_detail_container) != null) {
             // The detail container view will be present only in the
             // large-screen layouts (res/values-w900dp).
@@ -70,20 +65,22 @@ public class RecipeListActivity extends AppCompatActivity implements RecipeAdapt
         mRecyclerView = findViewById(R.id.rv_recipe_list);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         rAdapter = new RecipeAdapter(this, mRecipeData, this);
-       // rAdapter.setClickListener(this);
-
+        // rAdapter.setClickListener(this);
 
 
         //Make the network call to get the recipe data and update adapter data
         makeNetworkCall();
 
+        // Get the IdlingResource instance
+        getIdlingResource();
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
 
 
     }
-    private void makeNetworkCall(){
+
+    private void makeNetworkCall() {
         // Create a very simple REST adapter which points the GitHub API endpoint.
         NetworkService netService = NetworkConfig.getClient().create(NetworkService.class);
 
@@ -102,14 +99,15 @@ public class RecipeListActivity extends AppCompatActivity implements RecipeAdapt
                 mRecyclerView.setAdapter(rAdapter);
 
 
-                Log.e(TAG,  "Number OF RECIPES" + mRecipeData.size());
+                Log.e(TAG, "Number OF RECIPES" + mRecipeData.size());
             }
 
             @Override
             public void onFailure(Call<List<Recipe>> call, Throwable t) {
                 // the network call was a failure
                 // TODO: handle error
-            }});
+            }
+        });
     }
 
     @Override
@@ -122,13 +120,13 @@ public class RecipeListActivity extends AppCompatActivity implements RecipeAdapt
         Recipe recipeToSend;
         recipeToSend = this.mRecipeData.get(position);
 
-        Log.d(TAG, "#MAINACTIVRT"+ recipeToSend);
+        Log.d(TAG, "#MAINACTIVRT" + recipeToSend);
         Bundle bundle = new Bundle();
 
         bundle.putParcelable("recipe", recipeToSend);
 
         Intent intent = new Intent(this, RecipeDetailActivity.class);
-       intent.putExtras(bundle);
+        intent.putExtras(bundle);
         startActivity(intent);
     }
 
@@ -144,4 +142,19 @@ public class RecipeListActivity extends AppCompatActivity implements RecipeAdapt
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
+    // The Idling Resource which will be null in production.
+    @Nullable
+    private SimpleIdlingResource mIdlingResource;
+
+    /**
+     * Only called from test, creates and returns a new {@link SimpleIdlingResource}.
+     */
+    @VisibleForTesting
+    @NonNull
+    public IdlingResource getIdlingResource() {
+        if (mIdlingResource == null) {
+            mIdlingResource = new SimpleIdlingResource();
+        }
+        return mIdlingResource;
+    }
 }
