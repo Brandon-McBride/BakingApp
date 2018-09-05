@@ -1,7 +1,6 @@
 package com.mcbridebrandon.bakingapp;
 
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -16,7 +15,6 @@ import com.mcbridebrandon.bakingapp.model.Ingredient;
 import com.mcbridebrandon.bakingapp.model.Recipe;
 import com.mcbridebrandon.bakingapp.model.Step;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,7 +26,6 @@ import java.util.List;
 public class RecipeDetailActivity extends AppCompatActivity implements StepListFragment.onStepClickListener{
     private static final String TAG = "DETAIL";
     private Recipe mRecipe;
-    private List<Ingredient> mIngredients;
     private List<Step> mSteps;
     private RecyclerView mIngredientRecyclerView;
     private IngredientAdapter mIngredientAdapter;
@@ -37,17 +34,15 @@ public class RecipeDetailActivity extends AppCompatActivity implements StepListF
 
     //video fragment
     private Step currentStep;
-    private int stepPosition;
 
-
-    //boolean to check if app is in two pane tablet mode
-    private boolean mTwoPane;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_detail);
 
+        boolean mTwoPane;
+        List<Ingredient> mIngredients;
         if(findViewById(R.id.two_pane_layout) != null){
             mTwoPane = true;
 
@@ -92,7 +87,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements StepListF
                     .commit();
 
             //load first step
-            stepPosition = 0;
+            int stepPosition = 0;
             currentStep = mSteps.get(stepPosition);
             //create a new instance of the ingredient fragment
             VideoPlayerFragment videoFragment = new VideoPlayerFragment();

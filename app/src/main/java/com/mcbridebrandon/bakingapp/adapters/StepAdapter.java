@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.mcbridebrandon.bakingapp.R;
-import com.mcbridebrandon.bakingapp.model.Recipe;
 import com.mcbridebrandon.bakingapp.model.Step;
 
 import java.util.List;
@@ -74,7 +73,7 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder
 
     public class StepViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView id;
-        TextView shortDescription;
+        final TextView shortDescription;
         TextView description;
         TextView videoUrl;
         TextView thumbUrl;

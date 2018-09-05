@@ -18,7 +18,7 @@ public class Ingredient implements Parcelable {
         this.setIngredient(ingredient);
     }
     //constructor used for parcel
-    public Ingredient(Parcel parcel) {
+    private Ingredient(Parcel parcel) {
         //read and set saved values from parcel
         quantity = parcel.readString();
         measure = parcel.readString();
@@ -53,7 +53,7 @@ public class Ingredient implements Parcelable {
         return quantity;
     }
 
-    public void setQuantity(String quantity) {
+    private void setQuantity(String quantity) {
         this.quantity = quantity;
     }
 
@@ -61,7 +61,7 @@ public class Ingredient implements Parcelable {
         return measure;
     }
 
-    public void setMeasure(String measure) {
+    private void setMeasure(String measure) {
         this.measure = measure;
     }
 
@@ -69,7 +69,7 @@ public class Ingredient implements Parcelable {
         return ingredient;
     }
 
-    public void setIngredient(String ingredient) {
+    private void setIngredient(String ingredient) {
         this.ingredient = ingredient;
     }
 }

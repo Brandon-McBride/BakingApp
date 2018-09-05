@@ -1,15 +1,11 @@
 package com.mcbridebrandon.bakingapp.fragments;
 
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,16 +28,11 @@ import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 import com.mcbridebrandon.bakingapp.R;
-import com.mcbridebrandon.bakingapp.adapters.StepAdapter;
-import com.mcbridebrandon.bakingapp.model.Step;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
-import java.util.List;
-
 public class VideoPlayerFragment extends Fragment{
     private ImageView ivThumbnail;
-    private TextView recipeDescription;
     private SimpleExoPlayer player;
     private PlayerView playerView;
     private Long playerPosition;
@@ -68,7 +59,7 @@ public class VideoPlayerFragment extends Fragment{
         View rootView = inflater.inflate(R.layout.fragment_video_player,container,false);
         playerView = rootView.findViewById(R.id.video_playerView);
         ivThumbnail = rootView.findViewById(R.id.iv_thumb);
-        recipeDescription = rootView.findViewById(R.id.tv_recipe_description);
+        TextView recipeDescription = rootView.findViewById(R.id.tv_recipe_description);
 
         if(savedInstanceState != null){
 

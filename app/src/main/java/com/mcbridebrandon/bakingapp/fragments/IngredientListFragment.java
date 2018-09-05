@@ -21,8 +21,6 @@ import java.util.List;
 public class IngredientListFragment extends Fragment {
 
     private View rootView;
-    private IngredientAdapter mIngredientAdapter;
-    private RecyclerView mIngredientRecyclerView;
     private List<Ingredient> ingredientList;
 
     //mandatory constructor for instantiating the fragment
@@ -42,13 +40,13 @@ public class IngredientListFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_ingredient_list,container,false);
 
         //get a reference to the recyclerview
-        mIngredientRecyclerView = rootView.findViewById(R.id.rv_ingredient_list);
+        RecyclerView mIngredientRecyclerView = rootView.findViewById(R.id.rv_ingredient_list);
 
         //set the layout manager
         mIngredientRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         //setup ingredient adapter
-        mIngredientAdapter = new IngredientAdapter(getContext(), ingredientList);
+        IngredientAdapter mIngredientAdapter = new IngredientAdapter(getContext(), ingredientList);
 
         //set the adapter
         mIngredientRecyclerView.setAdapter(mIngredientAdapter);

@@ -50,7 +50,7 @@ public class Recipe implements Parcelable {
     };
 
     //constructor used for parcel
-    public Recipe(Parcel parcel) {
+    private Recipe(Parcel parcel) {
         //read and set saved values from parcel
         id = parcel.readInt();
         name = parcel.readString();
@@ -81,7 +81,7 @@ public class Recipe implements Parcelable {
         return id;
     }
 
-    public void setId(int id) {
+    private void setId(int id) {
         this.id = id;
     }
 
@@ -89,7 +89,7 @@ public class Recipe implements Parcelable {
         return name;
     }
 
-    public void setName(String name) {
+    private void setName(String name) {
         this.name = name;
     }
 
@@ -97,7 +97,7 @@ public class Recipe implements Parcelable {
         return servings;
     }
 
-    public void setServings(int servings) {
+    private void setServings(int servings) {
         this.servings = servings;
     }
 
@@ -105,7 +105,7 @@ public class Recipe implements Parcelable {
         return image;
     }
 
-    public void setImage(String image) {
+    private void setImage(String image) {
         this.image = image;
     }
 
@@ -113,7 +113,7 @@ public class Recipe implements Parcelable {
         return steps;
     }
 
-    public void setSteps(List<Step> steps) {
+    private void setSteps(List<Step> steps) {
         this.steps = steps;
     }
 
@@ -121,7 +121,7 @@ public class Recipe implements Parcelable {
         return ingredients;
     }
 
-    public void setIngredients(List<Ingredient> ingredients) {
+    private void setIngredients(List<Ingredient> ingredients) {
         this.ingredients = ingredients;
     }
 }

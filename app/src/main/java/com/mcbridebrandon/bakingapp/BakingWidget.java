@@ -2,10 +2,8 @@ package com.mcbridebrandon.bakingapp;
 
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.text.method.ScrollingMovementMethod;
 import android.widget.RemoteViews;
 
 /**
@@ -30,14 +28,12 @@ public class BakingWidget extends AppWidgetProvider {
     }
     private String getIngredients(Context context){
         SharedPreferences pref = context.getSharedPreferences(PREFS_NAME, 0);
-        String WIDGET_INGREDIENTS = PREF_INGREDIENTS_KEY ;
-        return pref.getString(WIDGET_INGREDIENTS, null);
+        return pref.getString(PREF_INGREDIENTS_KEY, null);
     }
 
     private String getRecipeName(Context context){
         SharedPreferences pref = context.getSharedPreferences(PREFS_NAME, 0);
-        String WIDGET_RECIPE_NAME = PREF_RECIPE_NAME_KEY;
-        return pref.getString(WIDGET_RECIPE_NAME, null);
+        return pref.getString(PREF_RECIPE_NAME_KEY, null);
     }
 
 

@@ -1,26 +1,18 @@
 package com.mcbridebrandon.bakingapp;
 
-import android.content.Intent;
-import android.os.Parcelable;
-import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.mcbridebrandon.bakingapp.fragments.VideoPlayerFragment;
 import com.mcbridebrandon.bakingapp.model.Step;
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class StepDetailActivity extends AppCompatActivity implements View.OnClickListener {
     private ArrayList<Step> stepList;

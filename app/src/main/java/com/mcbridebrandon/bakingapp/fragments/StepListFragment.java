@@ -21,13 +21,9 @@ import com.mcbridebrandon.bakingapp.model.Step;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.security.auth.callback.Callback;
-
 public class StepListFragment extends Fragment implements StepAdapter.ItemClickListener{
 
     private View rootView;
-    private StepAdapter mStepAdapter;
-    private RecyclerView mStepRecyclerView;
     private List<Step> stepList;
     private boolean mTwoPane;
     private onStepClickListener mCallback;
@@ -38,7 +34,7 @@ public class StepListFragment extends Fragment implements StepAdapter.ItemClickL
     }
     //interface for onclick
     public interface onStepClickListener{
-      public void onStepItemClick(int position);
+      void onStepItemClick(int position);
     }
 
     //override onAttach to make sure that the container activity has implemented the callback
@@ -67,13 +63,13 @@ public class StepListFragment extends Fragment implements StepAdapter.ItemClickL
         View rootView = inflater.inflate(R.layout.fragment_step_list,container,false);
 
         //get a reference to the recyclerview
-        mStepRecyclerView = rootView.findViewById(R.id.rv_step_list);
+        RecyclerView mStepRecyclerView = rootView.findViewById(R.id.rv_step_list);
 
         //set the layout manager
         mStepRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         //setup ingredient adapter
-        mStepAdapter = new StepAdapter(getContext(), stepList, this);
+        StepAdapter mStepAdapter = new StepAdapter(getContext(), stepList, this);
 
         //set the adapter
         mStepRecyclerView.setAdapter(mStepAdapter);

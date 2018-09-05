@@ -60,7 +60,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
     }
 
     public class RecipeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView tvRecipeTitle;
+        final TextView tvRecipeTitle;
         //final ImageView recipeImageView;
 
 

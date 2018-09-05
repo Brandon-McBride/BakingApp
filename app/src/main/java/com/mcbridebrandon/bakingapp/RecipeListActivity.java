@@ -12,7 +12,6 @@ import android.support.test.espresso.IdlingResource;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 
 import com.mcbridebrandon.bakingapp.IdlingResource.SimpleIdlingResource;
 import com.mcbridebrandon.bakingapp.adapters.RecipeAdapter;
@@ -36,16 +35,13 @@ import retrofit2.Response;
  * item details side-by-side using two vertical panes.
  */
 public class RecipeListActivity extends AppCompatActivity implements RecipeAdapter.ItemClickListener {
-
-    private static final String TAG = "RecipeListActivity";
-    /**
-     * Whether or not the activity is in two-pane mode, i.e. running on a tablet
-     * device.
-     */
-    private boolean mTwoPane;
     private RecipeAdapter rAdapter;
     private RecyclerView mRecyclerView;
     private List<Recipe> mRecipeData;
+    // The Idling Resource which will be null in production.
+    @Nullable
+    private SimpleIdlingResource mIdlingResource;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +54,11 @@ public class RecipeListActivity extends AppCompatActivity implements RecipeAdapt
             // large-screen layouts (res/values-w900dp).
             // If this view is present, then the
             // activity should be in two-pane mode.
-            mTwoPane = true;
+            /*
+      Whether or not the activity is in two-pane mode, i.e. running on a tablet
+      device.
+     */
+            boolean mTwoPane = true;
         }
 
         // Set up the RecyclerView for displaying the list of movies in a grid
@@ -73,6 +73,7 @@ public class RecipeListActivity extends AppCompatActivity implements RecipeAdapt
 
         // Get the IdlingResource instance
         getIdlingResource();
+        mIdlingResource.setIdleState(false);
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
@@ -98,8 +99,9 @@ public class RecipeListActivity extends AppCompatActivity implements RecipeAdapt
                 rAdapter.updateAdapter(mRecipeData);
                 mRecyclerView.setAdapter(rAdapter);
 
-
-                Log.e(TAG, "Number OF RECIPES" + mRecipeData.size());
+                if (mIdlingResource != null) {
+                    mIdlingResource.setIdleState(true);
+                }
             }
 
             @Override
@@ -117,12 +119,10 @@ public class RecipeListActivity extends AppCompatActivity implements RecipeAdapt
     }
 
     private void launchDetailsActivity(int position) {
+        //Send Recipe to DetailsActivity
         Recipe recipeToSend;
         recipeToSend = this.mRecipeData.get(position);
-
-        Log.d(TAG, "#MAINACTIVRT" + recipeToSend);
         Bundle bundle = new Bundle();
-
         bundle.putParcelable("recipe", recipeToSend);
 
         Intent intent = new Intent(this, RecipeDetailActivity.class);
@@ -141,12 +141,7 @@ public class RecipeListActivity extends AppCompatActivity implements RecipeAdapt
         }
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
-
-    // The Idling Resource which will be null in production.
-    @Nullable
-    private SimpleIdlingResource mIdlingResource;
-
-    /**
+    /** Reference tea time udacity nanodegree
      * Only called from test, creates and returns a new {@link SimpleIdlingResource}.
      */
     @VisibleForTesting

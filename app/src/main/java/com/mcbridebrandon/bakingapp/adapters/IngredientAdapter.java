@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.mcbridebrandon.bakingapp.R;
 import com.mcbridebrandon.bakingapp.model.Ingredient;
-import com.mcbridebrandon.bakingapp.model.Recipe;
 
 import java.util.List;
 
@@ -67,8 +66,8 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
     }
 
     public class IngredientViewHolder extends RecyclerView.ViewHolder  {
-        TextView tvIngredientName;
-        TextView tvIngredientQuantity;
+        final TextView tvIngredientName;
+        final TextView tvIngredientQuantity;
         TextView tvIngredientMeasure;
         //final ImageView recipeImageView;
 

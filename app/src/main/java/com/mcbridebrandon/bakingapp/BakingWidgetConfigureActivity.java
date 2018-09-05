@@ -12,10 +12,6 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.RemoteViews;
-import android.widget.TextView;
 
 import com.mcbridebrandon.bakingapp.adapters.RecipeAdapter;
 import com.mcbridebrandon.bakingapp.model.Ingredient;
@@ -29,8 +25,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static java.security.AccessController.getContext;
-
 /**
  * The configuration screen for the {@link BakingWidget BakingWidget} AppWidget.
  */
@@ -39,14 +33,13 @@ public class BakingWidgetConfigureActivity extends Activity implements RecipeAda
     private static final String PREFS_NAME = "BakingApp";
     private static final String PREF_RECIPE_NAME_KEY = "recipeName";
     private static final String PREF_INGREDIENTS_KEY = "ingredients";
-    int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
+    private int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
 
     private RecipeAdapter rAdapter;
     private RecyclerView mRecyclerView;
     private List<Recipe> mRecipeData;
     private List<Ingredient> mIngredientList;
     private String recipeName;
-    private String ingredientListString;
 
 
     @Override
@@ -70,7 +63,6 @@ public class BakingWidgetConfigureActivity extends Activity implements RecipeAda
         // If this activity was started with an intent without an app widget ID, finish with an error.
         if (mAppWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
             finish();
-            return;
         }else {
             //continue
 
@@ -123,7 +115,7 @@ public class BakingWidgetConfigureActivity extends Activity implements RecipeAda
        recipeName = mRecipeData.get(position).getName();
        mIngredientList = mRecipeData.get(position).getIngredients();
 
-       ingredientListString = buildString(mIngredientList);
+        String ingredientListString = buildString(mIngredientList);
 
         if (context != null) {
             SharedPreferences pref = context.getSharedPreferences(PREFS_NAME, 0);
@@ -137,7 +129,7 @@ public class BakingWidgetConfigureActivity extends Activity implements RecipeAda
         }
         // It is the responsibility of the configuration activity to update the app widget
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-        BakingWidget.updateAppWidget(context, appWidgetManager, mAppWidgetId, recipeName,ingredientListString);
+        BakingWidget.updateAppWidget(context, appWidgetManager, mAppWidgetId, recipeName, ingredientListString);
 
         Intent resultValue = new Intent();
         resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
