@@ -1,5 +1,6 @@
 package com.mcbridebrandon.bakingapp.fragments;
 
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -10,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.android.exoplayer2.ExoPlayerFactory;
@@ -32,10 +34,16 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 public class VideoPlayerFragment extends Fragment{
+
+
     private ImageView ivThumbnail;
     private SimpleExoPlayer player;
     private PlayerView playerView;
+
     private Long playerPosition;
+    private boolean playWhenReady;
+    private int currentWindow;
+
     private View rootView;
     private String videoURL;
     private String thumbURL;
@@ -44,8 +52,8 @@ public class VideoPlayerFragment extends Fragment{
     private static final String THUMB_URL_KEY = "thumbURL";
     private static final String PLAYER_POSITION_KEY = "playerposition";
     private static final String STEP_DESCRIPTION_KEY = "stepdescription";
-
-
+    private static final String PLAYER_WINDOW_KEY = "window" ;
+    private static final String PLAYER_PLAY_KEY = "playwhenready" ;
 
 
     //mandatory constructor for instantiating the fragment
@@ -61,6 +69,13 @@ public class VideoPlayerFragment extends Fragment{
         playerView = rootView.findViewById(R.id.video_playerView);
         ivThumbnail = rootView.findViewById(R.id.iv_thumb);
         TextView recipeDescription = rootView.findViewById(R.id.tv_recipe_description);
+        //check orientations
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+            //Do some stuff
+            ivThumbnail.setVisibility(View.GONE);
+            recipeDescription.setVisibility(View.GONE);
+            playerView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        }
 
         if(savedInstanceState != null){
 
@@ -68,7 +83,8 @@ public class VideoPlayerFragment extends Fragment{
             thumbURL = savedInstanceState.getString(THUMB_URL_KEY);
             playerPosition = savedInstanceState.getLong(PLAYER_POSITION_KEY);
             description = savedInstanceState.getString(STEP_DESCRIPTION_KEY);
-
+            currentWindow = savedInstanceState.getInt(PLAYER_WINDOW_KEY);
+            playWhenReady = savedInstanceState.getBoolean(PLAYER_PLAY_KEY);
         }
            //init player
             initializePlayer(videoURL);
@@ -132,8 +148,9 @@ public class VideoPlayerFragment extends Fragment{
             player = ExoPlayerFactory.newSimpleInstance(getContext(), trackSelector);
 
             //Initialize the Player View
-
             playerView.setPlayer(player);
+            playWhenReady = true;
+            player.setPlayWhenReady(playWhenReady);
 
             // Produces DataSource instances through which media data is loaded.
             DataSource.Factory dataSourceFactory =
@@ -173,21 +190,43 @@ public class VideoPlayerFragment extends Fragment{
      * Release ExoPlayer.
      */
     private void releasePlayer() {
-        if (player == null) {
-            // do nothing
-        } else {
+        if (player != null) {
             playerPosition = player.getCurrentPosition();
-            player.stop();
+            currentWindow = player.getCurrentWindowIndex();
+            playWhenReady = player.getPlayWhenReady();
             player.release();
             player = null;
         }
     }
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (Util.SDK_INT > 23) {
+            initializePlayer(videoURL);
+        }
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if ((Util.SDK_INT <= 23 || player == null)) {
+            initializePlayer(videoURL);
+        }
+    }
     @Override
     public void onPause() {
         super.onPause();
-        //release player
-        releasePlayer();
+        if (Util.SDK_INT <= 23) {
+            releasePlayer();
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (Util.SDK_INT > 23) {
+            releasePlayer();
+        }
     }
 
 
@@ -198,6 +237,8 @@ public class VideoPlayerFragment extends Fragment{
         if(playerPosition != null){
             //save the position of the video player
             outState.putLong(PLAYER_POSITION_KEY, playerPosition);
+            outState.putInt(PLAYER_WINDOW_KEY,currentWindow);
+            outState.putBoolean(PLAYER_PLAY_KEY,playWhenReady);
         }
 
         //video url
