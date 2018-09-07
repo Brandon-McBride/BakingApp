@@ -235,7 +235,11 @@ public class VideoPlayerFragment extends Fragment{
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        if(playerPosition != null){
+        if(player != null){
+            playerPosition = player.getCurrentPosition();
+            currentWindow = player.getCurrentWindowIndex();
+            playWhenReady = player.getPlayWhenReady();
+            
             //save the position of the video player
             outState.putLong(PLAYER_POSITION_KEY, playerPosition);
             outState.putInt(PLAYER_WINDOW_KEY,currentWindow);
