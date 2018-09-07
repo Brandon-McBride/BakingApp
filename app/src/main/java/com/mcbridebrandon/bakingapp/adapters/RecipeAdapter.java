@@ -57,12 +57,9 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
 
     public class RecipeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         final TextView tvRecipeTitle;
-        //final ImageView recipeImageView;
-
 
         RecipeViewHolder(View itemView) {
             super(itemView);
-            //recipeImageView = itemView.findViewById();
             tvRecipeTitle = itemView.findViewById(R.id.tv_recipe_title);
 
 

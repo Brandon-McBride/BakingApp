@@ -71,26 +71,10 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
 
         IngredientViewHolder(View itemView) {
             super(itemView);
-            //recipeImageView = itemView.findViewById();
             tvIngredientQuantity = itemView.findViewById(R.id.tv_ingredient_qty);
-            //tvIngredientMeasure = itemView.findViewById(R.id.tv_ingredient_measure);
             tvIngredientName = itemView.findViewById(R.id.tv_ingredient_name);
-
-            //set onclick
-           // itemView.setOnClickListener(this);
         }
-
-       // @Override
-        //public void onClick(View v) {
-           // mClickListener.onItemClick(getAdapterPosition());
-       // }
     }
-
-    //click listener for recipe
-   // public interface ItemClickListener {
-       // void onItemClick(int position);
-
-   // }
 
     public void updateAdapter(List<Ingredient> itemList){
         this.mIngredientList = itemList;

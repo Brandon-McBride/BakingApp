@@ -134,42 +134,43 @@ public class VideoPlayerFragment extends Fragment{
 
        //check if there is a videoURL
         if(!videoURL.isEmpty()) {
+            if(player == null) {
+                // 1. Create a default TrackSelector
+                Handler mainHandler = new Handler();
+                BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
+                TrackSelection.Factory videoTrackSelectionFactory =
+                        new AdaptiveTrackSelection.Factory(bandwidthMeter);
+                DefaultTrackSelector trackSelector =
+                        new DefaultTrackSelector(videoTrackSelectionFactory);
+
+                // 2. Create the player
+                player = ExoPlayerFactory.newSimpleInstance(getContext(), trackSelector);
+
+                //Initialize the Player View
+                playerView.setPlayer(player);
+                playWhenReady = true;
+                player.setPlayWhenReady(playWhenReady);
+
+                // Produces DataSource instances through which media data is loaded.
+                DataSource.Factory dataSourceFactory =
+                        new DefaultDataSourceFactory(getContext(), Util.getUserAgent(getContext(), "Recipe Step"));
+
+                // Produces Extractor instances for parsing the media data.
+                ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
+
+                // This is the MediaSource representing the media to be played.
+                Uri videoUri = Uri.parse(videoURL);
+                MediaSource videoSource = new ExtractorMediaSource.Factory(dataSourceFactory)
+                        .createMediaSource(videoUri);
 
 
-            // 1. Create a default TrackSelector
-            Handler mainHandler = new Handler();
-            BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
-            TrackSelection.Factory videoTrackSelectionFactory =
-                    new AdaptiveTrackSelection.Factory(bandwidthMeter);
-            DefaultTrackSelector trackSelector =
-                    new DefaultTrackSelector(videoTrackSelectionFactory);
+                // Prepare the player with the source.
+                player.prepare(videoSource);
 
-            // 2. Create the player
-            player = ExoPlayerFactory.newSimpleInstance(getContext(), trackSelector);
+                if (playerPosition != null) {
+                    player.seekTo(playerPosition);
+                }
 
-            //Initialize the Player View
-            playerView.setPlayer(player);
-            playWhenReady = true;
-            player.setPlayWhenReady(playWhenReady);
-
-            // Produces DataSource instances through which media data is loaded.
-            DataSource.Factory dataSourceFactory =
-                    new DefaultDataSourceFactory(getContext(), Util.getUserAgent(getContext(), "Recipe Step"));
-
-            // Produces Extractor instances for parsing the media data.
-            ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
-
-            // This is the MediaSource representing the media to be played.
-            Uri videoUri = Uri.parse(videoURL);
-            MediaSource videoSource = new ExtractorMediaSource.Factory(dataSourceFactory)
-                    .createMediaSource(videoUri);
-
-
-            // Prepare the player with the source.
-            player.prepare(videoSource);
-
-            if(playerPosition != null){
-                player.seekTo(playerPosition);
             }
         }else{
             //hide the playerview

@@ -46,14 +46,7 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder
         String thumbUrl;
 
         if (mStepList != null) {
-            //holder.id.setText(String.valueOf(mStepList.get(position).getId()) );
             holder.shortDescription.setText(mStepList.get(position).getId() + ". " + mStepList.get(position).getShortDescription());
-           // holder.description.setText(mStepList.get(position).getDescription());
-            //holder.videoUrl.setText(mStepList.get(position).getVideoURL());
-
-            //holder.thumbUrl.setText(mStepList.get(position).getThumbnailURL());
-
-
         }
     }
 
@@ -76,13 +69,9 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder
 
         StepViewHolder(View itemView) {
             super(itemView);
-            //recipeImageView = itemView.findViewById();
-            //id = itemView.findViewById(R.id.tv_step_id);
-            shortDescription = itemView.findViewById(R.id.tv_step_short_description);
-           // description = itemView.findViewById(R.id.tv_step_description);
-           // videoUrl = itemView.findViewById(R.id.tv_video_url);
-            //thumbUrl = itemView.findViewById(R.id.tv_thumb_url);
 
+            //bind the view
+            shortDescription = itemView.findViewById(R.id.tv_step_short_description);
 
             //set onclick
             itemView.setOnClickListener(this);
